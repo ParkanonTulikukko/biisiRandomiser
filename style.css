@@ -6,6 +6,11 @@ body{
     color: #ffc266;
     font-family: 'Roboto', sans-serif;
   }
+
+  #audioList{
+    text-align: center;
+  }
+
   #myProgress {
     width: 420px;
      background-color: #d9d9f2; 
@@ -121,3 +126,4 @@ body{
     color: #ffc266;
     font-size: 20px;
   }
+
