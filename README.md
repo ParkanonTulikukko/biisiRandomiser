@@ -1,0 +1,1 @@
+Pieni webbiappi, joka satunnaisgeneroi mp3-tiedostojen esittämisjärjestyksen käyttäjäkohtaisesti. Biisijärjestys pysyy samana selainkohtaisesti. Appia voidaan käyttää apuna, kun halutaan koekuunteluttaa kappaleita, niin että kappalejärjestyksen vaikutus kuuntelukokemukseen minimoidaan.
