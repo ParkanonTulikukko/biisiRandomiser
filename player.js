@@ -1,37 +1,38 @@
+/**Soittimen alkuperäisen koodin lähde:
+  https://codepen.io/vanderzak/pen/BayjVep, HTML Audio Player, haettu 11.7.2023
+**/
+
 var listAudio = []
 var indexAudio = 0;
 var currentAudio = document.getElementById("myAudio");
 
-async function getRealDuration(index) {
-    // Load the audio file to get its metadata and the real duration
-    const audioElement = document.createElement('audio');
-    audioElement.src = listAudio[index].file;
-
+const loadAudio = (audioElement) => {
     return new Promise((resolve) => {
-        audioElement.addEventListener('loadedmetadata', () => {
-            // Update the duration property with the real duration
-            listAudio[index].duration = getMinutes(audioElement.duration);
-            resolve();
-        });
+      audioElement.addEventListener('loadedmetadata', () => resolve());
+      audioElement.load();
     });
-}
+  };
 
 fetchSongFilenames().then((mp3Files) => {
-    console.log(mp3Files);
+    //console.log(mp3Files);
     Promise.all(
         mp3Files.map(async (filename, index) => {
             const encodedFilename = encodeURIComponent(filename);
             const audioData = {
+                index: index,
                 name: filename,
                 file: `http://localhost:3000/mp3/${encodedFilename}`,
-                duration: "02:30", // Default duration before getting the real duration
             };
+            const audioElement = new Audio(audioData.file);
+            await loadAudio(audioElement);
+            audioData.duration = getMinutes(audioElement.duration);
             listAudio.push(audioData);
-            await getRealDuration(index); // Call the function to get the real duration
-            createTrackItem(index, audioData.name, audioData.duration);
         })
     ).then(() => {
-        // After all durations have been fetched, set up the player
+        listAudio.sort((a, b) => a.index - b.index);
+        listAudio.forEach((audioData, index) => {
+            createTrackItem(index, audioData.name, audioData.duration);
+          });
         document.querySelector('#source-audio').src = listAudio[indexAudio].file;
         document.querySelector('.title').innerHTML = listAudio[indexAudio].name;
         currentAudio.load();
@@ -127,7 +128,6 @@ function pauseAudio() {
 var timer = document.getElementsByClassName('timer')[0]
 
 var barProgress = document.getElementById("myBar");
-
 
 var width = 0;
 
